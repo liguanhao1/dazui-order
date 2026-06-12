@@ -336,7 +336,7 @@ function renderAdminList(){
   list.innerHTML=menuData.map((m,i)=>`
     <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem;border-bottom:1px solid #f0f0f0;gap:.5rem">
       <span style="flex:1"><b>${m.name}</b> <span style="color:#999;font-size:.75rem">${m.cat} ¥${m.price}</span> ${m.img?'🖼':''}</span>
-      <button onclick="delMenuItem(${i},this)" style="background:#fee;color:#e74c3c;border:none;padding:.25rem .6rem;border-radius:4px;cursor:pointer;font-size:.75rem">删除</button>
+      <button type="button" onclick="event.stopPropagation();delMenuItem(${i},this)" style="background:#fee;color:#e74c3c;border:none;padding:.25rem .6rem;border-radius:4px;cursor:pointer;font-size:.75rem">删除</button>
     </div>`).join("")||'<div style="color:#999;text-align:center;padding:2rem">暂无菜品</div>';
 }
 function addMenuItem(){
