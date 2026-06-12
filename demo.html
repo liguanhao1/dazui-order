@@ -178,16 +178,29 @@ const sizes = ["大碗","中碗","小碗"], spices = ["微辣","中辣","特辣"
 const dietOpts = ["不吃香菜","不吃葱花","不吃蒜","少油","少盐"];
 let sel = { size:"大碗", spice:"微辣", diet:[], note:"" };
 
-// ====== 本地存储 ======
-function loadMenu(){ try{ const d=localStorage.getItem("dazui_menu"); return d?JSON.parse(d):null; }catch(e){return null;} }
-function saveMenu(){ localStorage.setItem("dazui_menu",JSON.stringify(menuData)); }
-(function(){ const saved=loadMenu(); if(saved&&saved.length)menuData.length=0,menuData.push(...saved); })();
+// ====== IndexedDB 图片存储 ======
+const DB = { _db:null, open(){
+  return new Promise((ok,no)=>{ const r=indexedDB.open("dazui_img",1); r.onupgradeneeded=()=>r.result.createObjectStore("imgs");
+    r.onsuccess=()=>{this._db=r.result;ok()};r.onerror=()=>no(r.error); });
+},
+  async set(key,blob){ await this.open(); return new Promise((ok,no)=>{ const t=this._db.transaction("imgs","readwrite").objectStore("imgs"); t.put(blob,key);t.transaction.oncomplete=()=>ok();t.transaction.onerror=()=>no(); })},
+  async get(key){ await this.open(); return new Promise((ok,no)=>{ const t=this._db.transaction("imgs").objectStore("imgs").get(key); t.onsuccess=()=>ok(t.result);t.onerror=()=>no(); })},
+  async del(key){ await this.open(); return new Promise((ok,no)=>{ const t=this._db.transaction("imgs","readwrite").objectStore("imgs").delete(key); t.transaction.oncomplete=()=>ok();t.transaction.onerror=()=>no(); })},
+  async keys(){ await this.open(); return new Promise((ok,no)=>{ const t=this._db.transaction("imgs").objectStore("imgs").getAllKeys(); t.onsuccess=()=>ok(t.result);t.onerror=()=>no(); })},
+};
+
+// ====== 菜单图片渲染 ======
+function menuImgTag(item){
+  if(item.img && item.img.startsWith("blob:")) return `<img src="${item.img}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;border-radius:8px">`;
+  if(item.img) return `<img src="${item.img}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;border-radius:8px" onerror="this.parentElement.textContent='${item.icon}'">`;
+  return item.icon;
+}
 
 function renderMenu(filter){
   const m = document.getElementById("menu"), items = filter==="all"?menuData:menuData.filter(i=>i.cat===filter);
   m.innerHTML = items.map(i=>`
     <div class="item" onclick="openSheet(${i.id})">
-      <div class="img">${i.img ? `<img src="${i.img}" alt="${i.name}" style="width:100%;height:100%;object-fit:cover;border-radius:8px" onerror="this.style.display='none';this.parentElement.textContent='${i.icon}'">` : i.icon}</div>
+      <div class="img">${menuImgTag(i)}</div>
       <div class="info"><div class="name">${i.name}</div><div class="desc">${i.desc}</div><div class="price">¥${i.price}</div></div>
       <button class="add" onclick="event.stopPropagation();openSheet(${i.id})">+</button>
     </div>`).join("");
@@ -315,10 +328,13 @@ const adminHTML = `
       <input id="admName" placeholder="菜名" style="flex:1;min-width:80px;padding:.4rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem">
       <input id="admPrice" placeholder="价格" type="number" style="width:70px;padding:.4rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem">
     </div>
-    <div style="display:flex;gap:.5rem;margin-bottom:1rem">
-      <input id="admDesc" placeholder="描述（选填）" style="flex:1;padding:.4rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem">
-      <input id="admImg" placeholder="图片地址（选填）" style="flex:1;padding:.4rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem">
+    <div style="display:flex;gap:.5rem;margin-bottom:1rem;align-items:center">
+      <button type="button" onclick="document.getElementById('admFile').click()" style="padding:.4rem .8rem;background:#f0f0f0;border:1px solid #ddd;border-radius:6px;font-size:.82rem;cursor:pointer;white-space:nowrap">📷 相册选图</button>
+      <input type="file" id="admFile" accept="image/*" style="display:none" onchange="pickImage(this)">
+      <span id="admImgPreview" style="font-size:.75rem;color:#999;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">未选择</span>
     </div>
+    <input id="admImg" type="hidden" value="">
+    <input id="admDesc" placeholder="描述" style="width:100%;padding:.4rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem;margin-bottom:.5rem">
     <button onclick="addMenuItem()" style="width:100%;padding:.6rem;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;margin-bottom:1.5rem">➕ 添加菜品</button>
     <div id="admList" style="font-size:.85rem"></div>
   </div>
@@ -339,21 +355,54 @@ function renderAdminList(){
       <button type="button" onclick="event.stopPropagation();delMenuItem(${i},this)" style="background:#fee;color:#e74c3c;border:none;padding:.25rem .6rem;border-radius:4px;cursor:pointer;font-size:.75rem">删除</button>
     </div>`).join("")||'<div style="color:#999;text-align:center;padding:2rem">暂无菜品</div>';
 }
+// ====== 菜单持久化（含图片） ======
+async function loadMenuWithImgs(){
+  try{
+    const raw=localStorage.getItem("dazui_menu_v2"); if(!raw)return false;
+    const data=JSON.parse(raw);
+    for(const item of data){ if(item._imgId){ const blob=await DB.get(item._imgId); if(blob) item.img=URL.createObjectURL(blob); delete item._imgId; } }
+    menuData.length=0;menuData.push(...data);return true;
+  }catch(e){return false;}
+}
+async function saveMenuWithImgs(){
+  const data=menuData.map(m=>{ const o={...m}; if(o.img&&o.img.startsWith("blob:")){ o._imgId="img_"+m.id; delete o.img; } return o; });
+  localStorage.setItem("dazui_menu_v2",JSON.stringify(data));
+}
+
+let pendingImg=null;
+function pickImage(input){
+  const file=input.files[0];if(!file)return;
+  if(file.size>2*1024*1024){alert("图片不能超过2MB");return;}
+  pendingImg=file;
+  document.getElementById("admImgPreview").textContent="✅ "+file.name;
+  document.getElementById("admImg").value="__PICKED__";
+}
+
+(async function init(){ const ok=await loadMenuWithImgs(); if(!ok)saveMenuWithImgs(); })();
+
 function addMenuItem(){
   const name=document.getElementById("admName").value.trim(),price=Number(document.getElementById("admPrice").value);
   if(!name||!price)return alert("菜名和价格必填");
   const cat=document.getElementById("admCat").value,desc=document.getElementById("admDesc").value.trim();
-  const img=document.getElementById("admImg").value.trim();
   const id=Math.max(0,...menuData.map(m=>m.id))+1;
   const emojis={hot:"🍖",cold:"🥒",staple:"🍚",drink:"🥤"};
-  menuData.push({id,cat,name,desc:desc||name,price,icon:emojis[cat]||"🍽",img:img||null});
-  saveMenu();renderAdminList();renderMenu(activeCat);
-  document.getElementById("admName").value="";document.getElementById("admPrice").value="";document.getElementById("admDesc").value="";document.getElementById("admImg").value="";
+  const imgVal=document.getElementById("admImg").value;
+  const item={id,cat,name,desc:desc||name,price,icon:emojis[cat]||"🍽",img:null};
+  if(imgVal==="__PICKED__"&&pendingImg){
+    item.img=URL.createObjectURL(pendingImg);
+    DB.set("img_"+id, pendingImg);
+    pendingImg=null;
+  }else if(imgVal&&imgVal.startsWith("http")){
+    item.img=imgVal;
+  }
+  menuData.push(item);
+  saveMenuWithImgs();renderAdminList();renderMenu(activeCat);
+  document.getElementById("admName").value="";document.getElementById("admPrice").value="";document.getElementById("admDesc").value="";document.getElementById("admImg").value="";document.getElementById("admImgPreview").textContent="未选择";document.getElementById("admFile").value="";
 }
 function delMenuItem(i,btn){
   if(btn.dataset.confirm){
-    menuData.splice(i,1);saveMenu();renderAdminList();renderMenu(activeCat);
-    // 清理购物车中已删除的菜品
+    const del=menuData[i];if(del.img&&del.img.startsWith("blob:"))DB.del("img_"+del.id);
+    menuData.splice(i,1);saveMenuWithImgs();renderAdminList();renderMenu(activeCat);
     cart=cart.filter(c=>menuData.some(m=>m.id===c.id));updateCart();
     return;
   }
