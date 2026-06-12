@@ -42,6 +42,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .cart-footer .checkout{width:100%;padding:.75rem;background:#e74c3c;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;margin-top:.8rem}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:25;display:none}
 .overlay.on{display:block}
+.pay-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;padding:2rem 1.5rem;z-index:35;text-align:center;display:none;width:90%;max-width:360px}
+.pay-modal.on{display:block}
+.pay-modal h3{font-size:1.1rem;margin-bottom:.5rem}
+.pay-modal .amount{font-size:1.8rem;font-weight:800;color:#e74c3c;margin:.8rem 0}
+.pay-modal .qr-img{width:200px;height:200px;margin:1rem auto;border:1px solid #eee;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pay-modal .qr-img img{width:100%;height:100%;object-fit:contain}
+.pay-modal .hint{font-size:.78rem;color:#999;margin-bottom:1rem}
+.pay-done{width:100%;padding:.75rem;background:#07c160;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer}
+.pay-done:hover{background:#06ad56}
 </style>
 </head>
 <body>
@@ -70,6 +79,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   <span class="btn">去结算</span>
 </div>
 
+<div class="pay-modal" id="payModal">
+  <h3>💳 微信扫码支付</h3>
+  <div class="amount" id="payAmount">¥0.00</div>
+  <div class="qr-img">
+    <img id="payQrImg" src="https://liguanhao1.github.io/dazui-order/qr-pay.png" alt="收款码" onerror="this.parentElement.innerHTML='<div style=color:#999;font-size:.8rem>请将微信收款码保存为<br>qr-pay.png 放入项目目录</div>'">
+  </div>
+  <p class="hint">📱 截图保存收款码 → 微信扫一扫 → 输入金额付款</p>
+  <button class="pay-done" onclick="payDone()">✅ 我已付款，通知后厨</button>
+</div>
 <div class="overlay" id="overlay"></div>
 <div class="cart-panel" id="cartPanel">
   <div class="top">
@@ -186,6 +204,13 @@ function toggleIkki(key){
 
 function checkout(){
   if(cart.length===0)return;
+  const total = cart.reduce((s,c) => s + c.qty * c.price, 0);
+  document.getElementById("payAmount").textContent = "¥"+total.toFixed(2);
+  document.getElementById("payModal").classList.add("on");
+  document.getElementById("cartPanel").classList.remove("open");
+}
+
+function payDone(){
   const items = cart.map(c => `${c.name}×${c.qty}`).join("、");
   const total = cart.reduce((s,c) => s + c.qty * c.price, 0);
   const ikou = ["不要香菜","不要葱花","不要辣椒","不要蒜","不要姜","不要醋"];
@@ -194,11 +219,14 @@ function checkout(){
   const extras = [];
   if(ikouStr.length) extras.push("忌口: "+ikouStr.join("、"));
   if(note) extras.push("备注: "+note);
-  const extraStr = extras.length ? "\n\n"+extras.join("\n") : "";
+  const extraStr = extras.length ? "\n"+extras.join("\n") : "";
   alert(`✅ 下单成功！\n\n${items}\n\n共 ¥${total.toFixed(2)}${extraStr}\n\n后厨正在制作，请稍候…`);
   cart = [];
   dietaryPrefs = {};
+  document.getElementById("payModal").classList.remove("on");
+  document.getElementById("overlay").classList.remove("on");
   updateCart();
+}
   document.getElementById("cartPanel").classList.remove("open");
   document.getElementById("overlay").classList.remove("on");
 }
