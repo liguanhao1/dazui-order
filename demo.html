@@ -336,7 +336,7 @@ function renderAdminList(){
   list.innerHTML=menuData.map((m,i)=>`
     <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem;border-bottom:1px solid #f0f0f0;gap:.5rem">
       <span style="flex:1"><b>${m.name}</b> <span style="color:#999;font-size:.75rem">${m.cat} ¥${m.price}</span> ${m.img?'🖼':''}</span>
-      <button onclick="delMenuItem(${i})" style="background:#fee;color:#e74c3c;border:none;padding:.25rem .6rem;border-radius:4px;cursor:pointer;font-size:.75rem">删除</button>
+      <button onclick="delMenuItem(${i},this)" style="background:#fee;color:#e74c3c;border:none;padding:.25rem .6rem;border-radius:4px;cursor:pointer;font-size:.75rem">删除</button>
     </div>`).join("")||'<div style="color:#999;text-align:center;padding:2rem">暂无菜品</div>';
 }
 function addMenuItem(){
@@ -350,7 +350,16 @@ function addMenuItem(){
   saveMenu();renderAdminList();renderMenu(activeCat);
   document.getElementById("admName").value="";document.getElementById("admPrice").value="";document.getElementById("admDesc").value="";document.getElementById("admImg").value="";
 }
-function delMenuItem(i){ if(confirm("删除 "+menuData[i].name+"？")){ menuData.splice(i,1);saveMenu();renderAdminList();renderMenu(activeCat);updateCart(); } }
+function delMenuItem(i,btn){
+  if(btn.dataset.confirm){
+    menuData.splice(i,1);saveMenu();renderAdminList();renderMenu(activeCat);
+    // 清理购物车中已删除的菜品
+    cart=cart.filter(c=>menuData.some(m=>m.id===c.id));updateCart();
+    return;
+  }
+  btn.dataset.confirm="1";btn.textContent="确认删除";btn.style.background="#e74c3c";btn.style.color="#fff";
+  setTimeout(()=>{delete btn.dataset.confirm;btn.textContent="删除";btn.style.background="#fee";btn.style.color="#e74c3c"},3000);
+}
 
 // 长按店名3秒进入管理
 let pressTimer;
