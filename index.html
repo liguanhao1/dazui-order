@@ -345,7 +345,8 @@ document.body.insertAdjacentHTML("beforeend",adminHTML);
 function toggleAdmin(){
   adminOn=!adminOn;
   document.getElementById("adminPanel").style.display=adminOn?"block":"none";
-  if(adminOn) renderAdminList();
+  if(adminOn){ renderAdminList(); }
+  else { renderMenu(activeCat); updateCart(); }
 }
 function renderAdminList(){
   const list=document.getElementById("admList");
