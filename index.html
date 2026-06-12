@@ -147,36 +147,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 </div>
 
 <script>
+// ====== 菜单数据 ======
+// 改菜品：直接改下面数组
+// 加图片：img 填图片地址（本地文件放同级目录，比如 "images/gongbao.jpg"）
+//         不填 img 就用 icon emoji 占位
 const menuData = [
-  { id:1,cat:"hot",name:"宫保鸡丁",desc:"鸡胸肉丁+花生米，麻辣鲜香",price:32,icon:"🍗" },
-  { id:2,cat:"hot",name:"鱼香肉丝",desc:"猪肉丝+木耳+笋丝，酸甜微辣",price:28,icon:"🥩" },
-  { id:3,cat:"hot",name:"麻婆豆腐",desc:"嫩豆腐+牛肉末，麻辣烫口",price:22,icon:"🧈" },
-  { id:4,cat:"hot",name:"回锅肉",desc:"二刀肉+蒜苗+豆瓣酱，肥而不腻",price:30,icon:"🥓" },
-  { id:5,cat:"hot",name:"水煮鱼",desc:"草鱼片+豆芽+干辣椒，麻辣鲜嫩",price:58,icon:"🐟" },
-  { id:6,cat:"hot",name:"辣子鸡",desc:"鸡块+干辣椒+花椒，外酥里嫩",price:36,icon:"🍖" },
-  { id:7,cat:"cold",name:"蒜泥白肉",desc:"猪后腿肉+蒜泥+辣椒油",price:26,icon:"🥢" },
-  { id:8,cat:"cold",name:"凉拌黄瓜",desc:"新鲜黄瓜+蒜末+醋汁",price:12,icon:"🥒" },
-  { id:9,cat:"cold",name:"口水鸡",desc:"鸡腿肉+花生碎+红油料汁",price:28,icon:"🍗" },
-  { id:10,cat:"cold",name:"皮蛋豆腐",desc:"内酯豆腐+松花蛋+酱油汁",price:16,icon:"🥚" },
-  { id:11,cat:"staple",name:"蛋炒饭",desc:"鸡蛋+火腿丁+葱花",price:12,icon:"🍳" },
-  { id:12,cat:"staple",name:"担担面",desc:"肉末+花生碎+芝麻酱，麻辣味",price:14,icon:"🍝" },
-  { id:13,cat:"staple",name:"白米饭",desc:"东北珍珠大米",price:2,icon:"🍚" },
-  { id:17,cat:"staple",name:"酸辣粉",desc:"红薯粉+花生碎+酸辣汤底，够味",price:12,icon:"🍲" },
-  { id:18,cat:"staple",name:"云吞面",desc:"鲜虾云吞+细面+高汤，广东味道",price:15,icon:"🍜" },
-  { id:14,cat:"drink",name:"王老吉",desc:"罐装 310ml",price:6,icon:"🥫" },
-  { id:15,cat:"drink",name:"酸梅汤",desc:"自制冰镇酸梅汤 500ml",price:8,icon:"🥤" },
-  { id:16,cat:"drink",name:"雪花啤酒",desc:"瓶装 500ml",price:8,icon:"🍺" },
+  { id:1, cat:"hot", name:"宫保鸡丁", desc:"鸡胸肉丁+花生米，麻辣鲜香", price:32, icon:"🍗" },
+  { id:2, cat:"hot", name:"鱼香肉丝", desc:"猪肉丝+木耳+笋丝，酸甜微辣", price:28, icon:"🥩" },
+  { id:3, cat:"hot", name:"麻婆豆腐", desc:"嫩豆腐+牛肉末，麻辣烫口", price:22, icon:"🧈" },
+  { id:4, cat:"hot", name:"回锅肉",   desc:"二刀肉+蒜苗+豆瓣酱，肥而不腻", price:30, icon:"🥓" },
+  { id:5, cat:"hot", name:"水煮鱼",   desc:"草鱼片+豆芽+干辣椒，麻辣鲜嫩", price:58, icon:"🐟" },
+  { id:6, cat:"hot", name:"辣子鸡",   desc:"鸡块+干辣椒+花椒，外酥里嫩", price:36, icon:"🍖" },
+  { id:7, cat:"cold",name:"蒜泥白肉", desc:"猪后腿肉+蒜泥+辣椒油", price:26, icon:"🥢" },
+  { id:8, cat:"cold",name:"凉拌黄瓜", desc:"新鲜黄瓜+蒜末+醋汁", price:12, icon:"🥒" },
+  { id:9, cat:"cold",name:"口水鸡",   desc:"鸡腿肉+花生碎+红油料汁", price:28, icon:"🍗" },
+  { id:10,cat:"cold",name:"皮蛋豆腐", desc:"内酯豆腐+松花蛋+酱油汁", price:16, icon:"🥚" },
+  { id:11,cat:"staple",name:"蛋炒饭", desc:"鸡蛋+火腿丁+葱花", price:12, icon:"🍳" },
+  { id:12,cat:"staple",name:"担担面", desc:"肉末+花生碎+芝麻酱，麻辣味", price:14, icon:"🍝" },
+  { id:13,cat:"staple",name:"白米饭", desc:"东北珍珠大米", price:2,  icon:"🍚" },
+  { id:17,cat:"staple",name:"酸辣粉", desc:"红薯粉+花生碎+酸辣汤底，够味", price:12, icon:"🍲" },
+  { id:18,cat:"staple",name:"云吞面", desc:"鲜虾云吞+细面+高汤，广东味道", price:15, icon:"🍜" },
+  { id:14,cat:"drink",name:"王老吉",  desc:"罐装 310ml", price:6,  icon:"🥫" },
+  { id:15,cat:"drink",name:"酸梅汤",  desc:"自制冰镇酸梅汤 500ml", price:8,  icon:"🥤" },
+  { id:16,cat:"drink",name:"雪花啤酒",desc:"瓶装 500ml", price:8,  icon:"🍺" },
+  // 加图片示例（取消下面注释，替换为真实图片地址）：
+  // { id:19,cat:"hot",name:"红烧牛肉",desc:"牛腩+土豆，慢炖入味",price:42,icon:"🥩",img:"images/beef.jpg" },
 ];
 let cart = [], activeCat = "all", curItem = null;
 const sizes = ["大碗","中碗","小碗"], spices = ["微辣","中辣","特辣","免辣"];
 const dietOpts = ["不吃香菜","不吃葱花","不吃蒜","少油","少盐"];
 let sel = { size:"大碗", spice:"微辣", diet:[], note:"" };
 
+// ====== 本地存储 ======
+function loadMenu(){ try{ const d=localStorage.getItem("dazui_menu"); return d?JSON.parse(d):null; }catch(e){return null;} }
+function saveMenu(){ localStorage.setItem("dazui_menu",JSON.stringify(menuData)); }
+(function(){ const saved=loadMenu(); if(saved&&saved.length)menuData.length=0,menuData.push(...saved); })();
+
 function renderMenu(filter){
   const m = document.getElementById("menu"), items = filter==="all"?menuData:menuData.filter(i=>i.cat===filter);
   m.innerHTML = items.map(i=>`
     <div class="item" onclick="openSheet(${i.id})">
-      <div class="img">${i.icon}</div>
+      <div class="img">${i.img ? `<img src="${i.img}" alt="${i.name}" style="width:100%;height:100%;object-fit:cover;border-radius:8px" onerror="this.style.display='none';this.parentElement.textContent='${i.icon}'">` : i.icon}</div>
       <div class="info"><div class="name">${i.name}</div><div class="desc">${i.desc}</div><div class="price">¥${i.price}</div></div>
       <button class="add" onclick="event.stopPropagation();openSheet(${i.id})">+</button>
     </div>`).join("");
@@ -288,6 +299,66 @@ document.getElementById("cats").addEventListener("click",e=>{
 });
 
 renderMenu("all");updateCart();
+
+// ====== 管理后台 ======
+let adminOn = false;
+const adminHTML = `
+<div id="adminPanel" style="display:none;position:fixed;inset:0;z-index:100;background:#fff;overflow-y:auto;padding-bottom:80px">
+  <div style="background:#1a1a2e;color:#fff;padding:1rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5">
+    <b>🔧 菜单管理</b><button onclick="toggleAdmin()" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer">✕</button>
+  </div>
+  <div style="padding:1rem">
+    <div style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap">
+      <select id="admCat" style="padding:.4rem .6rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem">
+        <option value="hot">🔥 热菜</option><option value="cold">🥒 凉菜</option><option value="staple">🍚 主食</option><option value="drink">🥤 饮品</option>
+      </select>
+      <input id="admName" placeholder="菜名" style="flex:1;min-width:80px;padding:.4rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem">
+      <input id="admPrice" placeholder="价格" type="number" style="width:70px;padding:.4rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem">
+    </div>
+    <div style="display:flex;gap:.5rem;margin-bottom:1rem">
+      <input id="admDesc" placeholder="描述（选填）" style="flex:1;padding:.4rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem">
+      <input id="admImg" placeholder="图片地址（选填）" style="flex:1;padding:.4rem;border:1px solid #ddd;border-radius:6px;font-size:.85rem">
+    </div>
+    <button onclick="addMenuItem()" style="width:100%;padding:.6rem;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;margin-bottom:1.5rem">➕ 添加菜品</button>
+    <div id="admList" style="font-size:.85rem"></div>
+  </div>
+</div>`;
+
+document.body.insertAdjacentHTML("beforeend",adminHTML);
+
+function toggleAdmin(){
+  adminOn=!adminOn;
+  document.getElementById("adminPanel").style.display=adminOn?"block":"none";
+  if(adminOn) renderAdminList();
+}
+function renderAdminList(){
+  const list=document.getElementById("admList");
+  list.innerHTML=menuData.map((m,i)=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem;border-bottom:1px solid #f0f0f0;gap:.5rem">
+      <span style="flex:1"><b>${m.name}</b> <span style="color:#999;font-size:.75rem">${m.cat} ¥${m.price}</span> ${m.img?'🖼':''}</span>
+      <button onclick="delMenuItem(${i})" style="background:#fee;color:#e74c3c;border:none;padding:.25rem .6rem;border-radius:4px;cursor:pointer;font-size:.75rem">删除</button>
+    </div>`).join("")||'<div style="color:#999;text-align:center;padding:2rem">暂无菜品</div>';
+}
+function addMenuItem(){
+  const name=document.getElementById("admName").value.trim(),price=Number(document.getElementById("admPrice").value);
+  if(!name||!price)return alert("菜名和价格必填");
+  const cat=document.getElementById("admCat").value,desc=document.getElementById("admDesc").value.trim();
+  const img=document.getElementById("admImg").value.trim();
+  const id=Math.max(0,...menuData.map(m=>m.id))+1;
+  const emojis={hot:"🍖",cold:"🥒",staple:"🍚",drink:"🥤"};
+  menuData.push({id,cat,name,desc:desc||name,price,icon:emojis[cat]||"🍽",img:img||null});
+  saveMenu();renderAdminList();renderMenu(activeCat);
+  document.getElementById("admName").value="";document.getElementById("admPrice").value="";document.getElementById("admDesc").value="";document.getElementById("admImg").value="";
+}
+function delMenuItem(i){ if(confirm("删除 "+menuData[i].name+"？")){ menuData.splice(i,1);saveMenu();renderAdminList();renderMenu(activeCat);updateCart(); } }
+
+// 长按店名3秒进入管理
+let pressTimer;
+document.querySelector(".header").addEventListener("touchstart",()=>{ pressTimer=setTimeout(toggleAdmin,2000); });
+document.querySelector(".header").addEventListener("touchend",()=>clearTimeout(pressTimer));
+document.querySelector(".header").addEventListener("touchmove",()=>clearTimeout(pressTimer));
+// 桌面端双击进入
+document.querySelector(".header").addEventListener("dblclick",toggleAdmin);
 </script>
 </body>
 </html>
