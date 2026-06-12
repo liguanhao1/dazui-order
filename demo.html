@@ -105,7 +105,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
     <button class="close" id="sheetClose">✕</button>
   </div>
   <div class="sheet-body">
-    <div class="section">
+    <div class="section" id="sizeSection">
       <div class="section-label">份量</div>
       <div class="option-row" id="sizeOpts"></div>
     </div>
@@ -174,8 +174,8 @@ const menuData = [
   // { id:19,cat:"hot",name:"红烧牛肉",desc:"牛腩+土豆，慢炖入味",price:42,icon:"🥩",img:"images/beef.jpg" },
 ];
 let cart = [], activeCat = "all", curItem = null;
-const sizes = ["大碗","中碗","小碗"], spices = ["微辣","中辣","特辣","免辣"];
-const dietOpts = ["不吃香菜","不吃葱花","不吃蒜","少油","少盐"];
+const sizes = [], spices = ["不辣","辣"];
+const dietOpts = ["不吃香菜","不吃葱花"];
 let sel = { size:"大碗", spice:"微辣", diet:[], note:"" };
 
 // ====== IndexedDB 图片存储 ======
@@ -214,6 +214,7 @@ function openSheet(id){
   document.getElementById("sheetOrig").textContent = "";
   document.getElementById("noteInput").value = "";
   document.getElementById("sizeOpts").innerHTML = sizes.map(s=>`<span class="opt${s===sel.size?' on':''}" onclick="pick('size','${s}')">${s}</span>`).join("");
+  document.getElementById("sizeSection").style.display = sizes.length ? "" : "none";
   document.getElementById("spiceOpts").innerHTML = spices.map(s=>`<span class="opt${s===sel.spice?' on':''}" onclick="pick('spice','${s}')">${s}</span>`).join("");
   document.getElementById("dietOpts").innerHTML = dietOpts.map(d=>`<span class="opt${sel.diet.includes(d)?' on':''}" onclick="toggleDiet('${d}')">${d}</span>`).join("");
   document.getElementById("sheet").classList.add("on");
