@@ -373,10 +373,19 @@ async function saveMenuWithImgs(){
 let pendingImg=null;
 function pickImage(input){
   const file=input.files[0];if(!file)return;
-  if(file.size>2*1024*1024){alert("图片不能超过2MB");return;}
-  pendingImg=file;
-  document.getElementById("admImgPreview").textContent="✅ "+file.name;
-  document.getElementById("admImg").value="__PICKED__";
+  if(file.size>10*1024*1024){alert("图片不能超过10MB");return;}
+  if(file.size>800*1024){
+    const img=new Image();img.onload=()=>{
+      const c=document.createElement("canvas"),maxW=400;
+      const ratio=maxW/img.width;c.width=maxW;c.height=Math.round(img.height*ratio);
+      c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+      c.toBlob(b=>{ pendingImg=b;document.getElementById("admImgPreview").textContent="✅ "+file.name+" (已压缩)";document.getElementById("admImg").value="__PICKED__"; },"image/jpeg",0.8);
+    };img.src=URL.createObjectURL(file);
+  }else{
+    pendingImg=file;
+    document.getElementById("admImgPreview").textContent="✅ "+file.name;
+    document.getElementById("admImg").value="__PICKED__";
+  }
 }
 
 (async function init(){ const ok=await loadMenuWithImgs(); if(ok)renderMenu(activeCat); else saveMenuWithImgs(); })();
