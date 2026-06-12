@@ -378,7 +378,7 @@ function pickImage(input){
   document.getElementById("admImg").value="__PICKED__";
 }
 
-(async function init(){ const ok=await loadMenuWithImgs(); if(!ok)saveMenuWithImgs(); })();
+(async function init(){ const ok=await loadMenuWithImgs(); if(ok)renderMenu(activeCat); else saveMenuWithImgs(); })();
 
 function addMenuItem(){
   const name=document.getElementById("admName").value.trim(),price=Number(document.getElementById("admPrice").value);
