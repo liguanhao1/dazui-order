@@ -10,92 +10,140 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .header{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;padding:1.2rem 1rem;text-align:center;position:sticky;top:0;z-index:10}
 .header h2{font-size:1.1rem;font-weight:600}
 .header .table{font-size:.75rem;opacity:.75;margin-top:.2rem}
-.cart-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#222;color:#fff;padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center;z-index:20;cursor:pointer}
-.cart-bar .left{display:flex;align-items:center;gap:.6rem}
-.cart-bar .badge{background:#e74c3c;color:#fff;font-size:.7rem;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
-.cart-bar .total{font-weight:700;font-size:1rem}
-.cart-bar .btn{background:#e74c3c;color:#fff;border:none;padding:.45rem 1.2rem;border-radius:6px;font-weight:600;cursor:pointer;font-size:.85rem}
 .cats{display:flex;gap:.5rem;padding:.8rem 1rem;overflow-x:auto;background:#fff;position:sticky;top:80px;z-index:5;border-bottom:1px solid #eee}
 .cat{padding:.35rem .8rem;border-radius:20px;font-size:.78rem;white-space:nowrap;border:1px solid #ddd;background:#fff;cursor:pointer;transition:all .2s;flex-shrink:0}
 .cat.on{background:#e74c3c;color:#fff;border-color:#e74c3c}
 .menu{padding:.8rem 1rem 80px}
-.item{display:flex;gap:.8rem;padding:.8rem;background:#fff;border-radius:10px;margin-bottom:.6rem;align-items:center}
+.item{display:flex;gap:.8rem;padding:.8rem;background:#fff;border-radius:10px;margin-bottom:.6rem;align-items:center;cursor:pointer}
+.item:active{background:#f9f9f9}
 .item .img{width:70px;height:70px;border-radius:8px;background:#f0f0f0;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2rem}
 .item .info{flex:1;min-width:0}
 .item .name{font-weight:600;font-size:.92rem;margin-bottom:.15rem}
 .item .desc{font-size:.72rem;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .item .price{color:#e74c3c;font-weight:700;font-size:.9rem;margin-top:.3rem}
-.item .add{width:28px;height:28px;border-radius:50%;background:#e74c3c;color:#fff;border:none;font-size:1.2rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;line-height:1}
+.item .add{width:28px;height:28px;border-radius:50%;background:#e74c3c;color:#fff;border:none;font-size:1.2rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;line-height:1;transition:transform .15s}
+.item .add:active{transform:scale(.9)}
+/* Cart Bar */
+.cart-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#222;color:#fff;padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center;z-index:20;cursor:pointer}
+.cart-bar .left{display:flex;align-items:center;gap:.6rem}
+.cart-bar .badge{background:#e74c3c;color:#fff;font-size:.7rem;min-width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;padding:0 5px}
+.cart-bar .total{font-weight:700;font-size:1rem}
+.cart-bar .btn{background:#e74c3c;color:#fff;border:none;padding:.45rem 1.2rem;border-radius:6px;font-weight:600;cursor:pointer;font-size:.85rem}
+/* Overlay */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:25;display:none}
+.overlay.on{display:block}
+/* Bottom Sheet */
+.sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:480px;max-height:85vh;background:#fff;border-radius:20px 20px 0 0;z-index:30;transition:transform .3s ease-out;display:flex;flex-direction:column}
+.sheet.on{transform:translateX(-50%) translateY(0)}
+.sheet-header{display:flex;justify-content:space-between;align-items:flex-start;padding:1.2rem 1.2rem .6rem}
+.sheet-header h3{font-size:1.05rem;font-weight:700;line-height:1.4;flex:1;padding-right:.5rem}
+.sheet-header .close{width:28px;height:28px;border-radius:50%;background:#f5f5f5;border:none;font-size:1rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#999}
+.sheet-body{flex:1;overflow-y:auto;padding:0 1.2rem 100px}
+.section{margin-bottom:1.3rem}
+.section-label{font-size:.78rem;color:#999;margin-bottom:.5rem;font-weight:500}
+.option-row{display:flex;flex-wrap:wrap;gap:.45rem}
+.opt{padding:.45rem 1rem;border-radius:20px;font-size:.82rem;cursor:pointer;transition:all .15s;border:1.5px solid #eee;background:#f8f8f8;color:#555;user-select:none}
+.opt.on{border-color:#e67e22;background:#fff;color:#e67e22;font-weight:600}
+.tip-box{margin-top:.6rem;padding:.5rem .7rem;background:#fff8f0;border-radius:8px;font-size:.72rem;color:#e67e22;border:1px solid #ffe0c0}
+.sheet-footer{position:absolute;bottom:0;left:0;right:0;padding:.8rem 1.2rem;padding-bottom:max(.8rem,env(safe-area-inset-bottom));background:#fff;border-top:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;z-index:5}
+.sheet-footer .price-info{display:flex;flex-direction:column}
+.sheet-footer .price{font-size:1.3rem;font-weight:800;color:#e74c3c}
+.sheet-footer .orig{font-size:.72rem;color:#bbb;text-decoration:line-through}
+.sheet-footer .add-btn{padding:.7rem 2rem;background:#f5a623;color:#fff;border:none;border-radius:24px;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .15s}
+.sheet-footer .add-btn:active{background:#e6951a}
 /* Cart Panel */
 .cart-panel{position:fixed;top:0;right:-100%;width:100%;max-width:480px;height:100vh;background:#fff;z-index:30;transition:right .3s;display:flex;flex-direction:column}
-.cart-panel.open{right:0}
-.cart-panel .top{padding:1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee}
-.cart-panel .top h3{font-size:1rem}.cart-panel .top button{background:none;border:none;font-size:1.2rem;cursor:pointer}
+.cart-panel.on{right:0}
+.cart-panel .cph{padding:1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee}
+.cart-panel .cph h3{font-size:1rem}
+.cart-panel .cph button{background:none;border:none;font-size:1.2rem;cursor:pointer;color:#999}
 .cart-list{flex:1;overflow-y:auto;padding:1rem}
-.cart-item{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid #f5f5f5;font-size:.9rem}
-.cart-item .qty{display:flex;align-items:center;gap:.5rem}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid #f5f5f5;font-size:.88rem}
+.cart-item .ci-left{flex:1}
+.cart-item .ci-name{font-weight:600}
+.cart-item .ci-opts{font-size:.72rem;color:#e67e22;margin-top:.15rem}
+.cart-item .qty{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
 .cart-item .qty button{width:24px;height:24px;border-radius:50%;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center}
+.cart-item .ci-price{font-weight:700;color:#e74c3c;margin-left:.8rem;font-size:.85rem}
 .cart-empty{text-align:center;color:#999;padding:3rem 0;font-size:.9rem}
-.cart-footer{padding:1rem;border-top:1px solid #eee}
+.cart-footer{padding:1rem;padding-bottom:max(1rem,env(safe-area-inset-bottom));border-top:1px solid #eee}
 .cart-footer .row{display:flex;justify-content:space-between;margin-bottom:.4rem;font-size:.85rem}
 .cart-footer .row.total{font-weight:700;font-size:1.05rem;margin-top:.4rem;padding-top:.4rem;border-top:1px solid #eee}
-.cart-footer .checkout{width:100%;padding:.75rem;background:#e74c3c;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;margin-top:.8rem}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:25;display:none}
-.overlay.on{display:block}
+.cart-footer .checkout{width:100%;padding:.75rem;background:#e74c3c;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;margin-top:.6rem}
+.cart-footer .checkout:active{background:#c0392b}
+/* Pay Modal */
 .pay-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;padding:2rem 1.5rem;z-index:35;text-align:center;display:none;width:90%;max-width:360px}
 .pay-modal.on{display:block}
 .pay-modal h3{font-size:1.1rem;margin-bottom:.5rem}
 .pay-modal .amount{font-size:1.8rem;font-weight:800;color:#e74c3c;margin:.8rem 0}
-.pay-modal .qr-img{width:250px;height:250px;margin:.6rem auto;border:1px solid #eee;border-radius:12px;overflow:hidden}
-.pay-modal .qr-img img{width:100%;height:100%;object-fit:contain}
-.pay-modal .hint{font-size:.78rem;color:#999;margin-bottom:1rem}
+.pay-modal .qr-img{max-width:250px;margin:.6rem auto;border-radius:12px;overflow:hidden}
+.pay-modal .qr-img img{width:100%;display:block}
+.pay-modal .hint{font-size:.78rem;color:#e74c3c;font-weight:600;margin:.4rem 0}
+.pay-modal .subhint{font-size:.75rem;color:#999;margin-bottom:.8rem}
 .pay-done{width:100%;padding:.75rem;background:#07c160;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer}
-.pay-done:hover{background:#06ad56}
+.pay-done:active{background:#06ad56}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h2>🍜 大嘴食肆</h2>
-  <div class="table">桌号 A05 · 扫码点餐</div>
-</div>
-
+<div class="header"><h2>🍜 大嘴食肆</h2><div class="table">桌号 A05 · 扫码点餐</div></div>
 <div class="cats" id="cats">
-  <span class="cat on" data-cat="all">全部</span>
-  <span class="cat" data-cat="hot">🔥 热菜</span>
-  <span class="cat" data-cat="cold">🥒 凉菜</span>
-  <span class="cat" data-cat="staple">🍚 主食</span>
-  <span class="cat" data-cat="drink">🥤 饮品</span>
+  <span class="cat on" data-cat="all">全部</span><span class="cat" data-cat="hot">🔥 热菜</span><span class="cat" data-cat="cold">🥒 凉菜</span><span class="cat" data-cat="staple">🍚 主食</span><span class="cat" data-cat="drink">🥤 饮品</span>
 </div>
-
 <div class="menu" id="menu"></div>
 
 <div class="cart-bar" id="cartBar">
-  <div class="left">
-    <span>🛒</span>
-    <span class="badge" id="cartCount">0</span>
-  </div>
-  <span class="total" id="cartTotal">¥0.00</span>
-  <span class="btn">去结算</span>
+  <div class="left"><span>🛒</span><span class="badge" id="cartCount">0</span></div>
+  <span class="total" id="cartTotal">¥0.00</span><span class="btn">去结算</span>
 </div>
 
+<!-- Bottom Sheet -->
+<div class="overlay" id="sheetOverlay"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-header">
+    <h3 id="sheetTitle"></h3>
+    <button class="close" id="sheetClose">✕</button>
+  </div>
+  <div class="sheet-body">
+    <div class="section">
+      <div class="section-label">份量</div>
+      <div class="option-row" id="sizeOpts"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">辣度</div>
+      <div class="option-row" id="spiceOpts"></div>
+    </div>
+    <div class="section">
+      <div class="section-label">忌口/备注</div>
+      <div class="option-row" id="dietOpts"></div>
+      <div class="tip-box">⚠ 特殊忌口请在下方备注，以免上错餐</div>
+    </div>
+    <div class="section">
+      <textarea id="noteInput" placeholder="其他备注（选填），如：多放醋、不要姜" style="width:100%;padding:.6rem .7rem;border:1.5px solid #eee;border-radius:10px;font-size:.82rem;font-family:inherit;resize:none;height:50px"></textarea>
+    </div>
+  </div>
+  <div class="sheet-footer">
+    <div class="price-info"><span class="price" id="sheetPrice">¥0</span><span class="orig" id="sheetOrig"></span></div>
+    <button class="add-btn" id="sheetAddBtn">加入购物车</button>
+  </div>
+</div>
+
+<!-- Cart Panel -->
+<div class="overlay" id="cartOverlay"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cph"><h3>已点菜品</h3><button id="cartClose">✕</button></div>
+  <div class="cart-list" id="cartList"></div>
+  <div class="cart-footer" id="cartFooter"></div>
+</div>
+
+<!-- Pay Modal -->
 <div class="pay-modal" id="payModal">
   <h3>💳 微信支付</h3>
   <div class="amount" id="payAmount">¥0.00</div>
-  <p style="color:#666;font-size:.78rem;margin:.4rem 0" id="payDetail"></p>
-  <img id="payQrImg" src="https://liguanhao1.github.io/dazui-order/qr-pay.png" alt="收款码" style="width:250px;height:250px;display:block;margin:.6rem auto;border-radius:12px;border:1px solid #eee">
-  <p style="font-size:.78rem;color:#e74c3c;font-weight:600;margin:.4rem 0">👆 长按上方二维码 → 识别图中二维码</p>
-  <p style="font-size:.75rem;color:#999;margin-bottom:.8rem">输入上方金额付款，付完点下方按钮</p>
+  <div class="qr-img"><img src="https://liguanhao1.github.io/dazui-order/qr-pay.png" alt="收款码"></div>
+  <p class="hint">👆 长按上方二维码 → 识别图中二维码</p>
+  <p class="subhint">输入上方金额付款，付完点下方按钮</p>
   <button class="pay-done" onclick="payDone()">✅ 已付款，通知后厨</button>
-</div>
-<div class="overlay" id="overlay"></div>
-<div class="cart-panel" id="cartPanel">
-  <div class="top">
-    <h3>已点菜品</h3>
-    <button id="cartClose">✕</button>
-  </div>
-  <div class="cart-list" id="cartList"></div>
-  <div class="cart-footer" id="cartFooter"></div>
 </div>
 
 <script>
@@ -119,140 +167,127 @@ const menuData = [
   { id:15,cat:"drink",name:"酸梅汤",desc:"自制冰镇酸梅汤 500ml",price:8,icon:"🥤" },
   { id:16,cat:"drink",name:"雪花啤酒",desc:"瓶装 500ml",price:8,icon:"🍺" },
 ];
-let cart = [];
-let dietaryPrefs = {};
-let activeCat = "all";
+let cart = [], activeCat = "all", curItem = null;
+const sizes = ["大碗","中碗","小碗"], spices = ["微辣","中辣","特辣","免辣"];
+const dietOpts = ["不吃香菜","不吃葱花","不吃蒜","少油","少盐"];
+let sel = { size:"大碗", spice:"微辣", diet:[], note:"" };
 
 function renderMenu(filter){
-  const m = document.getElementById("menu");
-  const items = filter === "all" ? menuData : menuData.filter(i => i.cat === filter);
-  m.innerHTML = items.map(i => `
-    <div class="item">
+  const m = document.getElementById("menu"), items = filter==="all"?menuData:menuData.filter(i=>i.cat===filter);
+  m.innerHTML = items.map(i=>`
+    <div class="item" onclick="openSheet(${i.id})">
       <div class="img">${i.icon}</div>
-      <div class="info">
-        <div class="name">${i.name}</div>
-        <div class="desc">${i.desc}</div>
-        <div class="price">¥${i.price}</div>
-      </div>
-      <button class="add" onclick="addItem(${i.id})">+</button>
-    </div>
-  `).join("");
+      <div class="info"><div class="name">${i.name}</div><div class="desc">${i.desc}</div><div class="price">¥${i.price}</div></div>
+      <button class="add" onclick="event.stopPropagation();openSheet(${i.id})">+</button>
+    </div>`).join("");
 }
 
-function addItem(id){
-  const found = cart.find(c => c.id === id);
-  if(found) found.qty++;
-  else{ const item = menuData.find(i => i.id === id); cart.push({...item,qty:1}); }
-  updateCart();
+function openSheet(id){
+  curItem = menuData.find(i=>i.id===id); if(!curItem)return;
+  sel = { size:"大碗", spice:"微辣", diet:[], note:"" };
+  document.getElementById("sheetTitle").textContent = curItem.name + "【堂食】";
+  document.getElementById("sheetPrice").textContent = "¥"+curItem.price;
+  document.getElementById("sheetOrig").textContent = "";
+  document.getElementById("noteInput").value = "";
+  document.getElementById("sizeOpts").innerHTML = sizes.map(s=>`<span class="opt${s===sel.size?' on':''}" onclick="pick('size','${s}')">${s}</span>`).join("");
+  document.getElementById("spiceOpts").innerHTML = spices.map(s=>`<span class="opt${s===sel.spice?' on':''}" onclick="pick('spice','${s}')">${s}</span>`).join("");
+  document.getElementById("dietOpts").innerHTML = dietOpts.map(d=>`<span class="opt${sel.diet.includes(d)?' on':''}" onclick="toggleDiet('${d}')">${d}</span>`).join("");
+  document.getElementById("sheet").classList.add("on");
+  document.getElementById("sheetOverlay").classList.add("on");
 }
 
-function removeItem(id){
-  const found = cart.find(c => c.id === id);
-  if(!found)return;
-  found.qty--;
-  if(found.qty <= 0) cart = cart.filter(c => c.id !== id);
+function pick(key,val){ sel[key]=val; openSheet(curItem.id); }
+function toggleDiet(d){
+  sel.diet.includes(d) ? sel.diet=sel.diet.filter(x=>x!==d) : sel.diet.push(d);
+  openSheet(curItem.id);
+}
+
+function closeSheet(){
+  document.getElementById("sheet").classList.remove("on");
+  document.getElementById("sheetOverlay").classList.remove("on");
+}
+
+document.getElementById("sheetOverlay").addEventListener("click",closeSheet);
+document.getElementById("sheetClose").addEventListener("click",closeSheet);
+
+document.getElementById("sheetAddBtn").addEventListener("click",()=>{
+  const opts = [sel.size];
+  sel.diet.forEach(d=>opts.push(d));
+  if(sel.spice!=="微辣") opts.push(sel.spice);
+  const note = document.getElementById("noteInput").value.trim();
+  if(note) opts.push(note);
+  cart.push({...curItem, qty:1, opts:opts.join(" · ")});
+  closeSheet();
+  updateCart();
+});
+
+function removeItem(idx){
+  cart.splice(idx,1);
   updateCart();
 }
+function incItem(idx){ cart[idx].qty++; updateCart(); }
+function decItem(idx){ cart[idx].qty--; if(cart[idx].qty<=0) cart.splice(idx,1); updateCart(); }
 
 function updateCart(){
-  const count = cart.reduce((s,c) => s + c.qty, 0);
-  const total = cart.reduce((s,c) => s + c.qty * c.price, 0);
+  const count = cart.reduce((s,c)=>s+c.qty,0), total = cart.reduce((s,c)=>s+c.qty*c.price,0);
   document.getElementById("cartCount").textContent = count;
-  document.getElementById("cartTotal").textContent = "¥" + total.toFixed(2);
+  document.getElementById("cartTotal").textContent = "¥"+total.toFixed(2);
   renderCartPanel();
 }
 
 function renderCartPanel(){
-  const list = document.getElementById("cartList");
-  const footer = document.getElementById("cartFooter");
-  if(cart.length === 0){
-    list.innerHTML = '<div class="cart-empty">🛒 还没有点菜，去菜单里加吧</div>';
-    footer.innerHTML = "";
-    return;
-  }
-  list.innerHTML = cart.map(c => `
+  const list = document.getElementById("cartList"), footer = document.getElementById("cartFooter");
+  if(cart.length===0){ list.innerHTML='<div class="cart-empty">🛒 还没有点菜，去菜单里加吧</div>'; footer.innerHTML=""; return; }
+  list.innerHTML = cart.map((c,i)=>`
     <div class="cart-item">
-      <span>${c.name} <span style="color:#999;font-size:.8rem">¥${c.price}</span></span>
-      <span class="qty">
-        <button onclick="removeItem(${c.id})">−</button>
-        <span>${c.qty}</span>
-        <button onclick="addItem(${c.id})">+</button>
-      </span>
-    </div>
-  `).join("");
-  const total = cart.reduce((s,c) => s + c.qty * c.price, 0);
-  const ikou = ["不要香菜","不要葱花","不要辣椒","不要蒜","不要姜","不要醋"];
-  const ikouChecked = ikou.filter(i => dietaryPrefs[i]);
+      <div class="ci-left"><div class="ci-name">${c.name}</div><div class="ci-opts">${c.opts}</div></div>
+      <div class="qty"><button onclick="decItem(${i})">−</button><span>${c.qty}</span><button onclick="incItem(${i})">+</button></div>
+      <span class="ci-price">¥${(c.price*c.qty).toFixed(0)}</span>
+    </div>`).join("");
+  const total = cart.reduce((s,c)=>s+c.qty*c.price,0);
   footer.innerHTML = `
     <div class="row"><span>菜品合计</span><span>¥${total.toFixed(2)}</span></div>
-    <div style="margin:.6rem 0;font-size:.82rem;color:#555">
-      <div style="font-weight:600;margin-bottom:.4rem">🥢 忌口 / 备注</div>
-      <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.5rem">
-        ${ikou.map(i => `<label style="display:flex;align-items:center;gap:.2rem;cursor:pointer;background:${dietaryPrefs[i]?'#fef2f2':'#f9fafb'};border:1px solid ${dietaryPrefs[i]?'#fca5a5':'#e5e7eb'};border-radius:6px;padding:.25rem .5rem;font-size:.75rem;transition:all .15s" onclick="toggleIkki('${i}')"><span>${dietaryPrefs[i]?'☑':'☐'}</span>${i}</label>`).join("")}
-      </div>
-      <textarea id="orderNote" placeholder="其他备注（选填），如：少油、少盐" style="width:100%;padding:.35rem .5rem;border:1px solid #e5e7eb;border-radius:6px;font-size:.75rem;font-family:inherit;resize:none;height:36px"></textarea>
-    </div>
     <div class="row total"><span>应付</span><span style="color:#e74c3c">¥${total.toFixed(2)}</span></div>
     <button class="checkout" onclick="checkout()">确认下单</button>
   `;
 }
 
-function toggleIkki(key){
-  dietaryPrefs[key] = !dietaryPrefs[key];
-  renderCartPanel();
-}
-
 function checkout(){
-  if(cart.length===0)return;
-  const total = cart.reduce((s,c) => s + c.qty * c.price, 0);
-  const items = cart.map(c => `${c.name}×${c.qty}`).join("、");
+  const total = cart.reduce((s,c)=>s+c.qty*c.price,0);
   document.getElementById("payAmount").textContent = "¥"+total.toFixed(2);
-  document.getElementById("payDetail").textContent = items;
   document.getElementById("payModal").classList.add("on");
-  document.getElementById("overlay").classList.add("on");
-  document.getElementById("cartPanel").classList.remove("open");
+  document.getElementById("cartOverlay").classList.add("on");
+  document.getElementById("cartPanel").classList.remove("on");
 }
 
 function payDone(){
-  const items = cart.map(c => `${c.name}×${c.qty}`).join("、");
-  const total = cart.reduce((s,c) => s + c.qty * c.price, 0);
-  const ikou = ["不要香菜","不要葱花","不要辣椒","不要蒜","不要姜","不要醋"];
-  const ikouStr = ikou.filter(i => dietaryPrefs[i]);
-  const note = document.getElementById("orderNote")?.value?.trim() || "";
-  const extras = [];
-  if(ikouStr.length) extras.push("忌口: "+ikouStr.join("、"));
-  if(note) extras.push("备注: "+note);
-  const extraStr = extras.length ? "\n"+extras.join("\n") : "";
-  alert(`✅ 下单成功！\n\n${items}\n\n共 ¥${total.toFixed(2)}${extraStr}\n\n后厨正在制作，请稍候…`);
-  cart = [];
-  dietaryPrefs = {};
+  const items = cart.map(c=>`${c.name}×${c.qty}（${c.opts}）`).join("、");
+  const total = cart.reduce((s,c)=>s+c.qty*c.price,0);
+  alert(`✅ 下单成功！\n\n${items}\n\n共 ¥${total.toFixed(2)}\n\n后厨正在制作，请稍候…`);
+  cart=[];updateCart();
   document.getElementById("payModal").classList.remove("on");
-  document.getElementById("overlay").classList.remove("on");
-  updateCart();
+  document.getElementById("cartOverlay").classList.remove("on");
 }
 
 document.getElementById("cartBar").addEventListener("click",()=>{
-  document.getElementById("cartPanel").classList.add("open");
-  document.getElementById("overlay").classList.add("on");
+  document.getElementById("cartPanel").classList.add("on");
+  document.getElementById("cartOverlay").classList.add("on");
 });
 document.getElementById("cartClose").addEventListener("click",()=>{
-  document.getElementById("cartPanel").classList.remove("open");
-  document.getElementById("overlay").classList.remove("on");
+  document.getElementById("cartPanel").classList.remove("on");
+  document.getElementById("cartOverlay").classList.remove("on");
 });
-document.getElementById("overlay").addEventListener("click",()=>{
-  document.getElementById("cartPanel").classList.remove("open");
-  document.getElementById("overlay").classList.remove("on");
+document.getElementById("cartOverlay").addEventListener("click",()=>{
+  document.getElementById("cartPanel").classList.remove("on");
+  document.getElementById("cartOverlay").classList.remove("on");
 });
 document.getElementById("cats").addEventListener("click",e=>{
   if(!e.target.classList.contains("cat"))return;
   document.querySelectorAll(".cat").forEach(c=>c.classList.remove("on"));
-  e.target.classList.add("on");
-  activeCat = e.target.dataset.cat;
-  renderMenu(activeCat);
+  e.target.classList.add("on");activeCat=e.target.dataset.cat;renderMenu(activeCat);
 });
 
-renderMenu("all");
-updateCart();
+renderMenu("all");updateCart();
 </script>
 </body>
 </html>
