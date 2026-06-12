@@ -7,12 +7,12 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f5f5;color:#222;max-width:480px;margin:0 auto;min-height:100vh}
-.header{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;padding:1.2rem 1rem;text-align:center;position:sticky;top:0;z-index:10}
+.header{background:linear-gradient(135deg,#a0522d,#7a3d20);color:#fff;padding:1.2rem 1rem;text-align:center;position:sticky;top:0;z-index:10}
 .header h2{font-size:1.1rem;font-weight:600}
 .header .table{font-size:.75rem;opacity:.75;margin-top:.2rem}
 .cats{display:flex;gap:.5rem;padding:.8rem 1rem;overflow-x:auto;background:#fff;position:sticky;top:80px;z-index:5;border-bottom:1px solid #eee}
 .cat{padding:.35rem .8rem;border-radius:20px;font-size:.78rem;white-space:nowrap;border:1px solid #ddd;background:#fff;cursor:pointer;transition:all .2s;flex-shrink:0}
-.cat.on{background:#e74c3c;color:#fff;border-color:#e74c3c}
+.cat.on{background:#a0522d;color:#fff;border-color:#a0522d}
 .menu{padding:.8rem 1rem 80px}
 .item{display:flex;gap:.8rem;padding:.8rem;background:#fff;border-radius:10px;margin-bottom:.6rem;align-items:center;cursor:pointer}
 .item:active{background:#f9f9f9}
@@ -20,15 +20,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .item .info{flex:1;min-width:0}
 .item .name{font-weight:600;font-size:.92rem;margin-bottom:.15rem}
 .item .desc{font-size:.72rem;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.item .price{color:#e74c3c;font-weight:700;font-size:.9rem;margin-top:.3rem}
-.item .add{width:28px;height:28px;border-radius:50%;background:#e74c3c;color:#fff;border:none;font-size:1.2rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;line-height:1;transition:transform .15s}
+.item .price{color:#a0522d;font-weight:700;font-size:.9rem;margin-top:.3rem}
+.item .add{width:28px;height:28px;border-radius:50%;background:#a0522d;color:#fff;border:none;font-size:1.2rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;line-height:1;transition:transform .15s}
 .item .add:active{transform:scale(.9)}
 /* Cart Bar */
 .cart-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#222;color:#fff;padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center;z-index:20;cursor:pointer}
 .cart-bar .left{display:flex;align-items:center;gap:.6rem}
-.cart-bar .badge{background:#e74c3c;color:#fff;font-size:.7rem;min-width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;padding:0 5px}
+.cart-bar .badge{background:#a0522d;color:#fff;font-size:.7rem;min-width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;padding:0 5px}
 .cart-bar .total{font-weight:700;font-size:1rem}
-.cart-bar .btn{background:#e74c3c;color:#fff;border:none;padding:.45rem 1.2rem;border-radius:6px;font-weight:600;cursor:pointer;font-size:.85rem}
+.cart-bar .btn{background:#a0522d;color:#fff;border:none;padding:.45rem 1.2rem;border-radius:6px;font-weight:600;cursor:pointer;font-size:.85rem}
 /* Overlay */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:25;display:none}
 .overlay.on{display:block}
@@ -47,7 +47,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .tip-box{margin-top:.6rem;padding:.5rem .7rem;background:#fff8f0;border-radius:8px;font-size:.72rem;color:#e67e22;border:1px solid #ffe0c0}
 .sheet-footer{position:absolute;bottom:0;left:0;right:0;padding:.8rem 1.2rem;padding-bottom:max(.8rem,env(safe-area-inset-bottom));background:#fff;border-top:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;z-index:5}
 .sheet-footer .price-info{display:flex;flex-direction:column}
-.sheet-footer .price{font-size:1.3rem;font-weight:800;color:#e74c3c}
+.sheet-footer .price{font-size:1.3rem;font-weight:800;color:#a0522d}
 .sheet-footer .orig{font-size:.72rem;color:#bbb;text-decoration:line-through}
 .sheet-footer .add-btn{padding:.7rem 2rem;background:#f5a623;color:#fff;border:none;border-radius:24px;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .15s}
 .sheet-footer .add-btn:active{background:#e6951a}
@@ -64,21 +64,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .cart-item .ci-opts{font-size:.72rem;color:#e67e22;margin-top:.15rem}
 .cart-item .qty{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
 .cart-item .qty button{width:24px;height:24px;border-radius:50%;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center}
-.cart-item .ci-price{font-weight:700;color:#e74c3c;margin-left:.8rem;font-size:.85rem}
+.cart-item .ci-price{font-weight:700;color:#a0522d;margin-left:.8rem;font-size:.85rem}
 .cart-empty{text-align:center;color:#999;padding:3rem 0;font-size:.9rem}
 .cart-footer{padding:1rem;padding-bottom:max(1rem,env(safe-area-inset-bottom));border-top:1px solid #eee}
 .cart-footer .row{display:flex;justify-content:space-between;margin-bottom:.4rem;font-size:.85rem}
 .cart-footer .row.total{font-weight:700;font-size:1.05rem;margin-top:.4rem;padding-top:.4rem;border-top:1px solid #eee}
-.cart-footer .checkout{width:100%;padding:.75rem;background:#e74c3c;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;margin-top:.6rem}
-.cart-footer .checkout:active{background:#c0392b}
+.cart-footer .checkout{width:100%;padding:.75rem;background:#a0522d;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;margin-top:.6rem}
+.cart-footer .checkout:active{background:#7a3d20}
 /* Pay Modal */
 .pay-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;padding:2rem 1.5rem;z-index:35;text-align:center;display:none;width:90%;max-width:360px}
 .pay-modal.on{display:block}
 .pay-modal h3{font-size:1.1rem;margin-bottom:.5rem}
-.pay-modal .amount{font-size:1.8rem;font-weight:800;color:#e74c3c;margin:.8rem 0}
+.pay-modal .amount{font-size:1.8rem;font-weight:800;color:#a0522d;margin:.8rem 0}
 .pay-modal .qr-img{max-width:250px;margin:.6rem auto;border-radius:12px;overflow:hidden}
 .pay-modal .qr-img img{width:100%;display:block}
-.pay-modal .hint{font-size:.78rem;color:#e74c3c;font-weight:600;margin:.4rem 0}
+.pay-modal .hint{font-size:.78rem;color:#a0522d;font-weight:600;margin:.4rem 0}
 .pay-modal .subhint{font-size:.75rem;color:#999;margin-bottom:.8rem}
 .pay-done{width:100%;padding:.75rem;background:#07c160;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer}
 .pay-done:active{background:#06ad56}
@@ -271,7 +271,7 @@ function renderCartPanel(){
   const total = cart.reduce((s,c)=>s+c.qty*c.price,0);
   footer.innerHTML = `
     <div class="row"><span>菜品合计</span><span>¥${total.toFixed(2)}</span></div>
-    <div class="row total"><span>应付</span><span style="color:#e74c3c">¥${total.toFixed(2)}</span></div>
+    <div class="row total"><span>应付</span><span style="color:#a0522d">¥${total.toFixed(2)}</span></div>
     <button class="checkout" onclick="checkout()">确认下单</button>
   `;
 }
@@ -353,7 +353,7 @@ function renderAdminList(){
   list.innerHTML=menuData.map((m,i)=>`
     <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem;border-bottom:1px solid #f0f0f0;gap:.5rem">
       <span style="flex:1"><b>${m.name}</b> <span style="color:#999;font-size:.75rem">${m.cat} ¥${m.price}</span> ${m.img?'🖼':''}</span>
-      <button type="button" onclick="event.stopPropagation();delMenuItem(${i},this)" style="background:#fee;color:#e74c3c;border:none;padding:.25rem .6rem;border-radius:4px;cursor:pointer;font-size:.75rem">删除</button>
+      <button type="button" onclick="event.stopPropagation();delMenuItem(${i},this)" style="background:#fee;color:#a0522d;border:none;padding:.25rem .6rem;border-radius:4px;cursor:pointer;font-size:.75rem">删除</button>
     </div>`).join("")||'<div style="color:#999;text-align:center;padding:2rem">暂无菜品</div>';
 }
 // ====== 菜单持久化（含图片） ======
@@ -416,8 +416,8 @@ function delMenuItem(i,btn){
     cart=cart.filter(c=>menuData.some(m=>m.id===c.id));updateCart();
     return;
   }
-  btn.dataset.confirm="1";btn.textContent="确认删除";btn.style.background="#e74c3c";btn.style.color="#fff";
-  setTimeout(()=>{delete btn.dataset.confirm;btn.textContent="删除";btn.style.background="#fee";btn.style.color="#e74c3c"},3000);
+  btn.dataset.confirm="1";btn.textContent="确认删除";btn.style.background="#a0522d";btn.style.color="#fff";
+  setTimeout(()=>{delete btn.dataset.confirm;btn.textContent="删除";btn.style.background="#fee";btn.style.color="#a0522d"},3000);
 }
 
 // 长按店名3秒进入管理
